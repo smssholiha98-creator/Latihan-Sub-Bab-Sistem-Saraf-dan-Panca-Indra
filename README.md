@@ -1,5 +1,5 @@
 # Latihan-Sistem-Saraf-WA-
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -60,7 +60,6 @@
 
         /* MEDIA QUERY UNTUK HP (PHONE MODE & iOS) */
         @media (max-width: 768px) {
-            /* Menggunakan min-height 100vh untuk iOS Safari address bar issue */
             .container { margin: 0; padding: 15px; border-radius: 0; min-height: 100vh; min-height: -webkit-fill-available; }
             html { height: -webkit-fill-available; }
             .exam-layout { flex-direction: column; }
@@ -352,12 +351,10 @@
             if (document.hidden) deteksiKecurangan();
         });
         
-        // Tambahan untuk dukungan Safari/iOS yang terkadang tidak membaca visibilitychange dengan baik
         window.addEventListener("pagehide", () => {
             deteksiKecurangan();
         });
 
-        // Cegah back button
         history.pushState(null, null, location.href);
         window.addEventListener('popstate', function () {
             history.pushState(null, null, location.href);
@@ -374,12 +371,12 @@
             kalkulasiDanKirim("Selesai Normal");
         }
 
+        // --- KODE YANG DIPERBAIKI ---
         function kalkulasiDanKirim(statusUjian) {
             isExamActive = false;
             clearInterval(timerInterval);
             
             let benar = 0;
-            
             let stringJawabanSiswa = answers.map((ans, idx) => {
                 let qData = bankSoal[idx];
                 let isBenar = (ans === qData.ans);
@@ -392,62 +389,33 @@
             }).join(" | ");
             
             let nilai = Math.round((benar / bankSoal.length) * 100);
-
-            let payload = {
-                nama: namaSiswa,
-                email: emailSiswa,
-                skor: statusUjian === "Diskualifikasi" ? 0 : nilai,
-                status: statusUjian,
-                detailJawaban: stringJawabanSiswa
-            };
-
-            // =========================================================================
-            // GANTI URL DI BAWAH INI DENGAN URL WEB APP GOOGLE SCRIPT ANDA!
-            let gasURL = "URL_GOOGLE_APPS_SCRIPT_ANDA_DISINI"; 
-            // =========================================================================
-
-            document.body.style.cursor = 'wait';
-            tampilkanHasilDanPembahasan(nilai);
-
-            function kalkulasiDanKirim(statusUjian) {
-            isExamActive = false;
-            clearInterval(timerInterval);
             
-            let benar = 0;
-            let stringJawabanSiswa = answers.map((ans, idx) => {
-                let qData = bankSoal[idx];
-                let isBenar = (ans === qData.ans);
-                if (isBenar) benar++;
-                let statusJwb = isBenar ? "Benar" : "Salah";
-                let teksPilihan = ans !== null ? qData.opt[ans].replace(/^[A-D]\.\s*/, "") : "Kosong";
-                return `ID${qData.id}:${teksPilihan}(${statusJwb})`;
-            }).join(" | ");
-            
-            let nilai = Math.round((benar / bankSoal.length) * 100);
+            // Jika didiskualifikasi, nilai otomatis 0
+            if (statusUjian === "Diskualifikasi") {
+                nilai = 0;
+            }
 
-            // Tampilkan hasil di layar siswa
+            // Tampilkan hasil di layar siswa terlebih dahulu
             tampilkanHasilDanPembahasan(nilai);
 
             // =======================================================
             // FITUR KIRIM KE WHATSAPP GURU
-            // Ganti nomor 6281234567890 dengan nomor WA Anda (gunakan awalan 62)
             // =======================================================
-            const nomorWaGuru = "6281226260404";
+            const nomorWaGuru = "6281226260404"; 
             
             let teksLaporan = `*LAPORAN UJIAN IPA*%0A`;
             teksLaporan += `Nama: ${namaSiswa}%0A`;
             teksLaporan += `Email: ${emailSiswa}%0A`;
             teksLaporan += `*SKOR AKHIR: ${nilai}*%0A`;
             teksLaporan += `Status: ${statusUjian}%0A%0A`;
-            teksLaporan += `Detail: ${stringJawabanSiswa}`;
+            teksLaporan += `Detail Jawaban:%0A${stringJawabanSiswa}`;
 
-            // Arahkan ke WhatsApp
+            // Buka WhatsApp di tab baru
             let linkWA = `https://api.whatsapp.com/send?phone=${nomorWaGuru}&text=${teksLaporan}`;
             window.open(linkWA, '_blank');
         }
 
         function tampilkanHasilDanPembahasan(skorAkhir) {
-            // Keluar dari fullscreen dengan try-catch agar tidak menyebabkan error di iOS
             try {
                 if (document.fullscreenElement && document.exitFullscreen) { 
                     document.exitFullscreen().catch(err => console.warn(err)); 
