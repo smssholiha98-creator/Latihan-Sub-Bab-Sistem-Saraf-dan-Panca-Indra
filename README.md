@@ -1,73 +1,184 @@
 # Latihan-Sub-Bab-Sistem-Saraf-dan-Panca-Indra-
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Ujian IPA: Sistem Saraf & Panca Indra</title>
     <style>
         :root {
             --primary: #0275d8;
-            --success: #5cb85c;
-            --danger: #d9534f;
-            --light: #f4f7f6;
-            --dark: #333;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --border: #dee2e6;
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #e9ecef; margin: 0; padding: 0; -webkit-text-size-adjust: 100%; }
-        .container { max-width: 900px; margin: 20px auto; background: white; padding: 20px 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background: #e9ecef; 
+            margin: 0; 
+            padding: 0; 
+            -webkit-text-size-adjust: 100%; 
+        }
+        
+        .container { 
+            max-width: 900px; 
+            margin: 20px auto; 
+            background: white; 
+            padding: 20px 30px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+        }
+        
         .hidden { display: none !important; }
         
-        /* Header & Info */
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
-        .timer { font-size: 1.5em; font-weight: bold; color: var(--danger); }
+        /* Header & Info (Sticky untuk Mobile nantinya) */
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 2px solid var(--border); 
+            padding-bottom: 15px; 
+            margin-bottom: 20px; 
+            gap: 10px; 
+            background: white;
+        }
+        .header-info h3 { margin: 0 0 5px 0; color: var(--dark); font-size: 1.1em; }
+        .header-info small { color: #6c757d; }
+        .timer { font-size: 1.5em; font-weight: bold; color: var(--danger); background: #ffeeba; padding: 5px 10px; border-radius: 6px; }
         
-        /* Layout Ujian (Responsive) */
-        .exam-layout { display: flex; gap: 20px; }
+        /* Layout Ujian */
+        .exam-layout { display: flex; gap: 25px; }
         .main-content { flex: 3; }
-        .sidebar { flex: 1; background: var(--light); padding: 15px; border-radius: 8px; max-height: 500px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        .sidebar { flex: 1; background: var(--light); padding: 20px; border-radius: 8px; border: 1px solid var(--border); height: fit-content; }
         
         /* Panel Nomor */
-        .panel-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 15px; }
-        .btn-nav { padding: 10px 0; text-align: center; border-radius: 5px; cursor: pointer; border: 1px solid #ccc; font-weight: bold; background: white; transition: 0.2s; -webkit-tap-highlight-color: transparent; }
+        .panel-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 15px; }
+        .btn-nav { 
+            padding: 10px 0; 
+            text-align: center; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            border: 1px solid #ced4da; 
+            font-weight: 600; 
+            background: white; 
+            transition: all 0.2s ease; 
+            -webkit-tap-highlight-color: transparent; 
+        }
         .btn-nav.answered { background: var(--success); color: white; border-color: var(--success); }
-        .btn-nav.current { border: 3px solid var(--primary); transform: scale(1.1); }
+        .btn-nav.current { border: 2px solid var(--primary); background: #e6f2ff; color: var(--primary); transform: scale(1.05); }
         
         /* Soal & Opsi */
-        .question-text { font-size: 1.2em; margin-bottom: 10px; line-height: 1.5; color: var(--dark); }
-        .badge-diff { display: inline-block; padding: 4px 8px; font-size: 0.8em; border-radius: 4px; color: white; margin-bottom: 15px; }
+        .question-text { font-size: 1.15em; margin-bottom: 20px; line-height: 1.6; color: var(--dark); }
+        .badge-diff { display: inline-block; padding: 4px 10px; font-size: 0.75em; font-weight: bold; border-radius: 4px; color: white; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; }
         .badge-lots { background: #17a2b8; }
-        .badge-mots { background: #f0ad4e; }
+        .badge-mots { background: #fd7e14; }
         
-        .option-label { display: block; background: var(--light); padding: 12px; margin-bottom: 10px; border-radius: 5px; cursor: pointer; border: 1px solid #ddd; transition: 0.2s; -webkit-tap-highlight-color: transparent; }
-        .option-label:hover { background: #e2e6ea; }
-        .option-label input { margin-right: 10px; }
-        .option-label.selected { background: #d0e8fc; border-color: var(--primary); }
+        .option-label { 
+            display: flex; 
+            align-items: flex-start;
+            background: white; 
+            padding: 15px; 
+            margin-bottom: 12px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            border: 2px solid var(--border); 
+            transition: all 0.2s; 
+            -webkit-tap-highlight-color: transparent; 
+            line-height: 1.5;
+        }
+        .option-label:hover { border-color: #b8daff; background: #f8fbff; }
+        .option-label input { margin-right: 12px; margin-top: 3px; transform: scale(1.2); }
+        .option-label.selected { background: #e6f2ff; border-color: var(--primary); }
 
         /* Tombol Aksi */
-        .action-buttons { display: flex; justify-content: space-between; margin-top: 20px; gap: 10px; flex-wrap: wrap; }
-        button { padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; font-weight: bold; transition: 0.2s; flex: 1; -webkit-appearance: none; }
+        .action-buttons { display: flex; justify-content: space-between; margin-top: 25px; gap: 10px; }
+        button { 
+            padding: 12px 15px; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 0.95em; 
+            font-weight: bold; 
+            transition: 0.2s; 
+            flex: 1; 
+            -webkit-appearance: none; 
+        }
+        button:active { transform: scale(0.98); }
         .btn-primary { background: var(--primary); color: white; }
-        .btn-warning { background: #f0ad4e; color: white; }
+        .btn-warning { background: var(--warning); color: var(--dark); }
         .btn-danger { background: var(--danger); color: white; width: 100%; margin-top: 20px;}
         
         /* Pembahasan */
-        .result-item { border: 1px solid #ccc; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
-        .correct-ans { background: #d4edda; border-color: #c3e6cb; }
-        .wrong-ans { background: #f8d7da; border-color: #f5c6cb; }
-        .discussion { margin-top: 10px; font-size: 0.95em; background: #fff3cd; padding: 10px; border-left: 4px solid #ffc107; }
+        .result-item { border: 1px solid var(--border); border-radius: 8px; padding: 15px; margin-bottom: 15px; background: white; }
+        .correct-ans { border-left: 5px solid var(--success); }
+        .wrong-ans { border-left: 5px solid var(--danger); }
+        .discussion { margin-top: 15px; font-size: 0.95em; background: #fff3cd; padding: 12px; border-radius: 6px; border: 1px solid #ffeeba; }
         
-        input[type="text"], input[type="email"] { width: 100%; padding: 12px; margin: 10px 0 20px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; -webkit-appearance: none;}
+        input[type="text"], input[type="email"] { width: 100%; padding: 14px; margin: 8px 0 20px 0; border: 1px solid #ced4da; border-radius: 6px; box-sizing: border-box; font-size: 1em; -webkit-appearance: none; }
 
-        /* MEDIA QUERY UNTUK HP (PHONE MODE & iOS) */
+        /* ========================================================= */
+        /* MEDIA QUERY KHUSUS MOBILE (PHONE MODE & iOS OPTIMIZATION) */
+        /* ========================================================= */
         @media (max-width: 768px) {
-            .container { margin: 0; padding: 15px; border-radius: 0; min-height: 100vh; min-height: -webkit-fill-available; }
-            html { height: -webkit-fill-available; }
-            .exam-layout { flex-direction: column; }
-            .sidebar { max-height: none; overflow-y: visible; margin-top: 20px; }
-            .action-buttons button { font-size: 0.9em; padding: 10px; }
-            .panel-grid { grid-template-columns: repeat(6, 1fr); }
-            .header { flex-direction: column; align-items: flex-start; }
-            .timer { align-self: flex-end; }
+            body { background: white; }
+            .container { 
+                margin: 0; 
+                padding: 0; /* Padding diatur per elemen agar bisa full width */
+                border-radius: 0; 
+                box-shadow: none;
+                min-height: 100vh; 
+            }
+            
+            #loginPage, #resultPage { padding: 20px; }
+            
+            /* Fitur Sticky Header untuk Mobile */
+            .header { 
+                position: sticky; 
+                top: 0; 
+                z-index: 100; 
+                padding: 15px 20px; 
+                margin: 0;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            }
+            .header-info h3 { font-size: 1em; }
+            .header-info small { font-size: 0.8em; }
+            .timer { font-size: 1.2em; padding: 4px 8px; }
+
+            .exam-layout { flex-direction: column; gap: 0; }
+            .main-content { padding: 20px; }
+            
+            /* Optimasi Tombol Aksi di Mobile (Bentuk Grid Sejajar) */
+            .action-buttons { 
+                display: grid; 
+                grid-template-columns: 1fr 1fr 1fr; 
+                gap: 8px; 
+                margin-top: 30px; 
+            }
+            .action-buttons button { 
+                padding: 12px 5px; 
+                font-size: 0.85em; 
+                line-height: 1.2;
+            }
+
+            /* Optimasi Panel Nomor */
+            .sidebar { 
+                margin: 0; 
+                padding: 20px; 
+                border-radius: 0; 
+                border-left: none; 
+                border-right: none; 
+                border-bottom: none;
+                background: var(--light);
+            }
+            .panel-grid { grid-template-columns: repeat(6, 1fr); gap: 6px; }
+            .btn-nav { padding: 8px 0; font-size: 0.9em; }
+            
+            /* Area Sentuh Opsi Jawaban Lebih Nyaman */
+            .option-label { padding: 16px; margin-bottom: 10px; }
         }
     </style>
 </head>
@@ -75,29 +186,34 @@
 
     <!-- HALAMAN LOGIN -->
     <div id="loginPage" class="container">
-        <h2 style="text-align: center; color: var(--primary);">Ujian Akhir: Sistem Saraf & Panca Indra</h2>
-        <p style="text-align: center;">Mata Pelajaran: IPA Kelas 9 | Durasi: 45 Menit</p>
-        <hr>
-        <label>Nama Lengkap (Sesuai Absen):</label>
-        <input type="text" id="nama" placeholder="Masukkan nama lengkap" required>
-        <label>Email Siswa:</label>
-        <input type="email" id="email" placeholder="Masukkan alamat email" required>
+        <h2 style="text-align: center; color: var(--primary); margin-top: 30px;">Ujian Akhir: Sistem Saraf & Panca Indra</h2>
+        <p style="text-align: center; color: #666; font-weight: 500;">Mata Pelajaran: IPA Kelas 9 | Durasi: 45 Menit</p>
+        <hr style="border: 0; border-top: 1px solid var(--border); margin: 25px 0;">
         
-        <div style="background: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin-bottom: 20px; font-size: 0.9em;">
-            <strong>⚠️ PERHATIAN PENTING:</strong><br>
-            1. <b>Soal & Opsi Jawaban diacak</b> untuk setiap siswa.<br>
-            2. Dilarang keras menekan tombol Home, berpindah aplikasi, membagi layar, atau membuka tab lain.<br>
-            3. Pelanggaran lebih dari 2 kali akan mengakibatkan <b>DISKUALIFIKASI</b>.
+        <label style="font-weight: 600; color: var(--dark);">Nama Lengkap (Sesuai Absen):</label>
+        <input type="text" id="nama" placeholder="Masukkan nama lengkap..." required>
+        
+        <label style="font-weight: 600; color: var(--dark);">Email Siswa:</label>
+        <input type="email" id="email" placeholder="Masukkan alamat email..." required>
+        
+        <div style="background: #fff3cd; padding: 15px; border-radius: 6px; margin-bottom: 25px; font-size: 0.9em; color: #856404; border: 1px solid #ffeeba;">
+            <strong style="display: block; margin-bottom: 8px;">⚠️ PERHATIAN PENTING:</strong>
+            <ol style="margin: 0; padding-left: 20px; line-height: 1.5;">
+                <li><b>Soal & Opsi Jawaban diacak</b> untuk setiap siswa.</li>
+                <li>Dilarang keras menekan tombol Home, berpindah aplikasi, membagi layar, atau membuka tab lain.</li>
+                <li>Pelanggaran lebih dari 2 kali akan mengakibatkan <b>DISKUALIFIKASI otomatis</b>.</li>
+            </ol>
         </div>
         
-        <button class="btn-primary" style="width: 100%; padding: 15px; font-size: 1.1em;" onclick="mulaiUjian()">Saya Mengerti, Mulai Ujian</button>
+        <button class="btn-primary" style="width: 100%; padding: 16px; font-size: 1.1em; border-radius: 8px;" onclick="mulaiUjian()">Saya Mengerti, Mulai Ujian</button>
     </div>
 
     <!-- HALAMAN UJIAN -->
     <div id="examPage" class="container hidden">
+        <!-- Header (Akan Sticky di Mobile) -->
         <div class="header">
-            <div>
-                <h3 style="margin:0;">IPA: Sistem Koordinasi</h3>
+            <div class="header-info">
+                <h3>IPA: Sistem Koordinasi</h3>
                 <small id="identitasSiswa"></small>
             </div>
             <div class="timer" id="timerDisplay">45:00</div>
@@ -110,29 +226,30 @@
                 <div id="optionsContainer"></div>
                 
                 <div class="action-buttons">
-                    <button id="btnPrev" class="btn-primary" onclick="changeQuestion(-1)">&#8592; Sebelumnya</button>
-                    <button id="btnSkip" class="btn-warning" onclick="skipQuestion()">Lewati &#8635;</button>
-                    <button id="btnNext" class="btn-primary" onclick="changeQuestion(1)">Selanjutnya &#8594;</button>
+                    <button id="btnPrev" class="btn-primary" onclick="changeQuestion(-1)">&#8592; Kembali</button>
+                    <button id="btnSkip" class="btn-warning" onclick="skipQuestion()">Ragu-ragu</button>
+                    <button id="btnNext" class="btn-primary" onclick="changeQuestion(1)">Lanjut &#8594;</button>
                 </div>
             </div>
             
             <div class="sidebar">
-                <h4 style="margin-top:0; text-align: center;">Navigasi Soal</h4>
+                <h4 style="margin-top:0; text-align: center; color: var(--dark);">Navigasi Soal</h4>
                 <div class="panel-grid" id="panelGrid"></div>
-                <button class="btn-danger" style="padding: 15px; font-size: 1.1em;" onclick="konfirmasiSelesai()">SELESAI & KUMPULKAN</button>
+                <button class="btn-danger" style="padding: 16px; font-size: 1.1em; border-radius: 8px; margin-top: 25px;" onclick="konfirmasiSelesai()">SELESAI & KUMPULKAN</button>
             </div>
         </div>
     </div>
 
     <!-- HALAMAN HASIL & PEMBAHASAN -->
     <div id="resultPage" class="container hidden">
-        <h2 style="text-align: center;">Hasil Ujian</h2>
-        <div style="text-align: center; font-size: 1.2em; margin-bottom: 20px;">
-            Nama: <span id="resNama"></span><br>
-            Nilai Akhir: <strong id="resSkor" style="font-size: 2em; color: var(--primary);"></strong>
+        <h2 style="text-align: center; color: var(--dark); margin-top: 30px;">Hasil Ujian</h2>
+        <div style="text-align: center; font-size: 1.2em; margin-bottom: 30px; background: var(--light); padding: 20px; border-radius: 8px;">
+            Nama: <span id="resNama" style="font-weight: bold;"></span><br>
+            Nilai Akhir:<br>
+            <strong id="resSkor" style="font-size: 3em; color: var(--primary); display: block; margin-top: 10px;"></strong>
         </div>
-        <hr>
-        <h3>Pembahasan:</h3>
+        <hr style="border: 0; border-top: 1px solid var(--border); margin: 25px 0;">
+        <h3 style="color: var(--dark);">Pembahasan Soal:</h3>
         <div id="discussionContainer"></div>
     </div>
 
@@ -236,6 +353,9 @@
             tampilkanSoal(0);
             
             timerInterval = setInterval(updateTimer, 1000);
+            
+            // Auto scroll ke atas saat mulai
+            window.scrollTo(0, 0);
         }
 
         // --- NAVIGASI SOAL ---
@@ -247,7 +367,10 @@
                 btn.className = "btn-nav";
                 btn.innerText = i + 1;
                 btn.id = "navBtn_" + i;
-                btn.onclick = () => tampilkanSoal(i);
+                btn.onclick = () => {
+                    tampilkanSoal(i);
+                    window.scrollTo(0, 0); // Scroll ke atas tiap pindah nomor
+                };
                 panel.appendChild(btn);
             }
         }
@@ -288,8 +411,11 @@
                 optsContainer.appendChild(lbl);
             });
 
-            document.getElementById("btnPrev").style.visibility = (index === 0) ? "hidden" : "visible";
-            document.getElementById("btnNext").style.visibility = (index === bankSoal.length - 1) ? "hidden" : "visible";
+            document.getElementById("btnPrev").disabled = (index === 0);
+            document.getElementById("btnPrev").style.opacity = (index === 0) ? "0.5" : "1";
+            
+            document.getElementById("btnNext").disabled = (index === bankSoal.length - 1);
+            document.getElementById("btnNext").style.opacity = (index === bankSoal.length - 1) ? "0.5" : "1";
         }
 
         function pilihJawaban(qIndex, optIndex, labelElement) {
@@ -301,7 +427,10 @@
 
         function changeQuestion(step) {
             let nextIndex = currentIndex + step;
-            if (nextIndex >= 0 && nextIndex < bankSoal.length) tampilkanSoal(nextIndex);
+            if (nextIndex >= 0 && nextIndex < bankSoal.length) {
+                tampilkanSoal(nextIndex);
+                window.scrollTo(0, 0);
+            }
         }
 
         function skipQuestion() {
@@ -309,6 +438,7 @@
             for (let i = currentIndex + 1; i < bankSoal.length; i++) {
                 if (answers[i] === null) {
                     tampilkanSoal(i);
+                    window.scrollTo(0, 0);
                     found = true; break;
                 }
             }
@@ -316,11 +446,12 @@
                 for(let i = 0; i < bankSoal.length; i++){
                     if (answers[i] === null) {
                         tampilkanSoal(i);
+                        window.scrollTo(0, 0);
                         found = true; break;
                     }
                 }
             }
-            if(!found) alert("Semua soal sudah dijawab! Silakan tekan tombol Selesai di bawah panel nomor.");
+            if(!found) alert("Semua soal sudah dijawab! Silakan gulir ke bawah dan kumpulkan ujian.");
         }
 
         // --- TIMER ---
@@ -335,7 +466,7 @@
             document.getElementById("timerDisplay").innerText = (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
         }
 
-        // --- ANTI CHEAT (Diperbarui untuk dukungan iOS) ---
+        // --- ANTI CHEAT ---
         function deteksiKecurangan() {
             if (isExamActive) {
                 cheatCount++;
@@ -371,7 +502,7 @@
             kalkulasiDanKirim("Selesai Normal");
         }
 
-        // --- KODE YANG DIPERBAIKI ---
+        // --- KALKULASI & KIRIM JAWABAN ---
         function kalkulasiDanKirim(statusUjian) {
             isExamActive = false;
             clearInterval(timerInterval);
@@ -390,27 +521,44 @@
             
             let nilai = Math.round((benar / bankSoal.length) * 100);
             
-            // Jika didiskualifikasi, nilai otomatis 0
             if (statusUjian === "Diskualifikasi") {
                 nilai = 0;
             }
 
-            // Tampilkan hasil di layar siswa terlebih dahulu
-            tampilkanHasilDanPembahasan(nilai);
+            // =======================================================
+            // INTEGRASI KE GOOGLE SHEETS
+            // =======================================================
+            let payload = {
+                nama: namaSiswa,
+                email: emailSiswa,
+                skor: nilai,
+                status: statusUjian,
+                detailJawaban: stringJawabanSiswa
+            };
+
+            // GANTI DENGAN URL WEB APP DARI GOOGLE APPS SCRIPT ANDA
+            let gasURL = "URL_GOOGLE_APPS_SCRIPT_ANDA_DISINI"; 
+
+            fetch(gasURL, {
+                method: "POST",
+                body: JSON.stringify(payload)
+            }).catch(error => console.error("Error:", error));
+
 
             // =======================================================
             // FITUR KIRIM KE WHATSAPP GURU
             // =======================================================
             const nomorWaGuru = "6281226260404"; 
             
-            let teksLaporan = `*LAPORAN UJIAN IPA*%0A`;
-            teksLaporan += `Nama: ${namaSiswa}%0A`;
+            let teksLaporan = `Nama: ${namaSiswa}%0A`;
             teksLaporan += `Email: ${emailSiswa}%0A`;
             teksLaporan += `Skor Siswa: ${nilai}`;
 
-            // Buka WhatsApp di tab baru
             let linkWA = `https://api.whatsapp.com/send?phone=${nomorWaGuru}&text=${teksLaporan}`;
             window.open(linkWA, '_blank');
+
+            // Tampilkan hasil di layar siswa
+            tampilkanHasilDanPembahasan(nilai);
         }
 
         function tampilkanHasilDanPembahasan(skorAkhir) {
@@ -421,7 +569,7 @@
                     document.webkitExitFullscreen(); 
                 }
             } catch (e) {
-                console.log("Exit fullscreen tidak didukung atau sedang tidak dalam fullscreen.");
+                console.log("Exit fullscreen tidak didukung.");
             }
 
             document.getElementById("examPage").classList.add("hidden");
@@ -444,14 +592,15 @@
                 item.className = `result-item ${isBenar ? 'correct-ans' : 'wrong-ans'}`;
                 
                 item.innerHTML = `
-                    <b>Soal No ${i + 1} (${q.type}) - <small style="color:#666;">ID Soal Asli: ${q.id}</small></b>
-                    <p>${q.q}</p>
-                    <p>Jawaban Anda: <b>${jwbTeks}</b> ${isBenar ? '✅' : '❌'}</p>
-                    <p>Kunci Jawaban: <b>${kunciTeks}</b></p>
+                    <div style="margin-bottom: 8px;"><b>Soal No ${i + 1} (${q.type})</b></div>
+                    <p style="margin-top:0;">${q.q}</p>
+                    <p style="margin: 5px 0;">Jawaban Anda: <b>${jwbTeks}</b> ${isBenar ? '✅' : '❌'}</p>
+                    <p style="margin: 5px 0;">Kunci Jawaban: <b>${kunciTeks}</b></p>
                     <div class="discussion"><b>Pembahasan:</b> ${q.bahas}</div>
                 `;
                 box.appendChild(item);
             });
+            window.scrollTo(0, 0);
         }
     </script>
 </body>
