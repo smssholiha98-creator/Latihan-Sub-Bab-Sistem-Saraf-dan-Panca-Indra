@@ -406,9 +406,7 @@
             let teksLaporan = `*LAPORAN UJIAN IPA*%0A`;
             teksLaporan += `Nama: ${namaSiswa}%0A`;
             teksLaporan += `Email: ${emailSiswa}%0A`;
-            teksLaporan += `*SKOR AKHIR: ${nilai}*%0A`;
-            teksLaporan += `Status: ${statusUjian}%0A%0A`;
-            teksLaporan += `Detail Jawaban:%0A${stringJawabanSiswa}`;
+            teksLaporan += `Skor Siswa: ${nilai}`;
 
             // Buka WhatsApp di tab baru
             let linkWA = `https://api.whatsapp.com/send?phone=${nomorWaGuru}&text=${teksLaporan}`;
