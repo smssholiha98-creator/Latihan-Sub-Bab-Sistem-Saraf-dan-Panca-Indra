@@ -1,4 +1,4 @@
-# Latihan-Sistem-Saraf-WA-
+# Latihan-Sub-Bab-Sistem-Saraf-dan-Panca-Indra-
  <!DOCTYPE html>
 <html lang="id">
 <head>
